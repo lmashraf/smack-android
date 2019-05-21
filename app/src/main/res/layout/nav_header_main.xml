@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height"
         android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
@@ -14,10 +14,10 @@
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             app:srcCompat="@drawable/profiledefault"
             android:contentDescription="@string/nav_header_desc"
-            android:id="@+id/userImageNavHeader"
-            android:layout_marginStart="8dp"
+            android:id="@+id/userImageNavHeaderImg"
+            android:layout_marginStart="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/loginBtnNavHeader"/>
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/loginNavHeaderBtn"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -25,34 +25,34 @@
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:text="@string/nav_header_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:id="@+id/userNameNavHeader"
-            app:layout_constraintStart_toEndOf="@+id/userImageNavHeader"
-            android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="@+id/userImageNavHeader"/>
+            android:id="@+id/userNameNavHeaderTxt"
+            app:layout_constraintStart_toEndOf="@+id/userImageNavHeaderImg"
+            android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="@+id/userImageNavHeaderImg"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nav_header_subtitle"
-            android:id="@+id/userMailNavHeader"
-            app:layout_constraintStart_toEndOf="@+id/userImageNavHeader"
-            android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/userNameNavHeader"
+            android:id="@+id/userMailNavHeaderTxt"
+            app:layout_constraintStart_toEndOf="@+id/userImageNavHeaderImg"
+            android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/userNameNavHeaderTxt"
     />
     <Button
-            android:text="LOGIN"
+            android:text="@string/login"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:id="@+id/loginBtnNavHeader"
+            android:id="@+id/loginNavHeaderBtn"
             android:background="@android:color/transparent" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="24dp"
-            app:layout_constraintStart_toStartOf="parent" android:onClick="loginBtnNavHeaderClicked"
-            android:textAlignment="viewStart"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:onClick="loginNavHeaderBtnClicked"
+            android:textAlignment="center" android:layout_marginStart="4dp"/>
     <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp" app:srcCompat="@drawable/addchannelbutton"
-            android:id="@+id/addChannel"
+            android:id="@+id/addChannelBtn"
             android:background="@android:color/transparent" android:scaleType="fitXY"
             android:padding="5dp" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-            android:onClick="addChannelClicked"/>
+            android:onClick="addChannelBtnClicked" android:contentDescription="@string/add_channel"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

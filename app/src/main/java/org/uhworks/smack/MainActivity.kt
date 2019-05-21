@@ -1,16 +1,12 @@
 package org.uhworks.smack
 
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
-import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import android.view.Menu
 import android.view.View
 
 class MainActivity : AppCompatActivity() {
@@ -43,11 +39,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun loginBtnNavHeaderClicked(view: View) {
+    fun loginNavHeaderBtnClicked(view: View) {
+
+        val loginIntent = Intent(this, LoginActivity::class.java)
+        startActivity(loginIntent)
 
     }
 
-    fun addChannelClicked(view: View) {
+    fun addChannelBtnClicked(view: View) {
 
     }
 
