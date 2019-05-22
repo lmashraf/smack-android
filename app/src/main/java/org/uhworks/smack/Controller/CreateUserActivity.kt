@@ -1,4 +1,4 @@
-package org.uhworks.smack
+package org.uhworks.smack.Controller
 
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_create_user.*
+import org.uhworks.smack.R
+import org.uhworks.smack.Services.AuthService
 import java.util.*
 
 class CreateUserActivity : AppCompatActivity() {
@@ -57,5 +59,20 @@ class CreateUserActivity : AppCompatActivity() {
 
     fun createUserBtnClicked(view: View) {
 
+        val email = createEmailTxt.text.toString()
+        val password = createPasswordTxt.text.toString()
+
+        AuthService.registerUser(this, email, password) { registerSuccess ->
+            if (registerSuccess) {
+                AuthService.loginUser(this, email, password) { loginSuccess ->
+                    if (loginSuccess) {
+                        println(AuthService.authToken)
+                        println(AuthService.userEmail)
+                    }
+                }
+            } else {
+
+            }
+        }
     }
 }
