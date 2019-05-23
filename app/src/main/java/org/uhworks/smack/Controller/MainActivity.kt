@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -62,6 +63,8 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        hideKeyboard()
 
         // Broadcast receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(
@@ -128,5 +131,15 @@ class MainActivity : AppCompatActivity() {
 
     fun sendMessageBtnClicked(view: View) {
 
+    }
+
+    private fun hideKeyboard() {
+
+        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        if(inputManager.isAcceptingText) {
+
+            inputManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+        }
     }
 }
