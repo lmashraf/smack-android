@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
-import android.service.autofill.UserData
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import kotlinx.android.synthetic.main.activity_create_user.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.uhworks.smack.R
 import org.uhworks.smack.Services.AuthService

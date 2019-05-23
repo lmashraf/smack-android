@@ -25,4 +25,5 @@
     <string name="tap_to_generate_user_avatar">Tap to generate user avatar</string>
     <string name="generate_background_colour">Generate background colour</string>
     <string name="create_user">Create user</string>
+    <string name="user_name">user name</string>
 </resources>

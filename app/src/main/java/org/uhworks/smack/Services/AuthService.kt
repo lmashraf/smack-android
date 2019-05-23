@@ -1,9 +1,7 @@
 package org.uhworks.smack.Services
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.service.autofill.UserData
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.android.volley.Response
@@ -12,7 +10,6 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
 import org.json.JSONObject
-import org.uhworks.smack.Controller.LoginActivity
 import org.uhworks.smack.Utilities.*
 
 // Contains all functions that deal with authorisation
