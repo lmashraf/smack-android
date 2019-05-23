@@ -22,6 +22,8 @@ class LoginActivity : AppCompatActivity() {
         val createUserIntent = Intent(this, CreateUserActivity::class.java)
         startActivity(createUserIntent)
 
+        // Dismiss to get back to Main Activity afterwards
+        finish()
     }
 }
 
