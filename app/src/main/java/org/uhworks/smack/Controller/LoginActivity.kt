@@ -4,7 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import kotlinx.android.synthetic.main.activity_login.*
 import org.uhworks.smack.R
+import org.uhworks.smack.Services.AuthService
+import org.uhworks.smack.Services.UserDataService
 
 class LoginActivity : AppCompatActivity() {
 
@@ -15,6 +18,21 @@ class LoginActivity : AppCompatActivity() {
 
     fun loginLoginBtnClicked(view: View) {
 
+        val email = loginEmailTxt.text.toString()
+        val password = loginPasswordTxt.text.toString()
+
+        AuthService.loginUser(this, email, password) { loginSuccess ->
+
+            if (loginSuccess) {
+
+                AuthService.findUserByEmail(this) { findSuccess ->
+                    if (findSuccess) {
+
+                        finish()
+                    }
+                }
+            }
+        }
     }
 
     fun loginCreateUserBtn(view: View) {

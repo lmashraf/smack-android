@@ -85,10 +85,10 @@ class MainActivity : AppCompatActivity() {
     fun loginNavHeaderBtnClicked(view: View) {
 
         if (AuthService.isLoggedIn) {
-            // log out
+
             UserDataService.logout()
 
-            userNameNavHeaderTxt.text = "Login"
+            userNameNavHeaderTxt.text = ""
             userMailNavHeaderTxt.text = ""
 
             userImageNavHeaderImg.setImageResource(R.drawable.profiledefault)
