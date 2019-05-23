@@ -1,9 +1,6 @@
 package org.uhworks.smack.Controller
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.graphics.Color
 import android.os.Bundle
 import androidx.core.view.GravityCompat
@@ -12,6 +9,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.View
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.uhworks.smack.R
@@ -103,6 +102,28 @@ class MainActivity : AppCompatActivity() {
 
     fun addChannelBtnClicked(view: View) {
 
+        if (AuthService.isLoggedIn) {
+
+            val builder = AlertDialog.Builder(this)
+            val dialogView = layoutInflater.inflate(R.layout.add_channel_dialog, null)
+
+            builder.setView(dialogView)
+                .setPositiveButton("Add") { dialogInterface, i ->
+
+                    val nameTextField = dialogView.findViewById<EditText>(R.id.addChannelNameTxt)
+                    val descTextField = dialogView.findViewById<EditText>(R.id.addChannelDescTxt)
+
+                    val channelName = nameTextField.text.toString()
+                    val channelDescription = descTextField.text.toString()
+
+                    // Create channel with channel name and description
+                }
+                .setNegativeButton("Cancel") { dialogInterface, i ->
+
+                    // Cancel and close the dialog
+                }
+                .show()
+        }
     }
 
     fun sendMessageBtnClicked(view: View) {
