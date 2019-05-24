@@ -13,13 +13,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import io.socket.client.IO
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.uhworks.smack.R
 import org.uhworks.smack.Services.AuthService
 import org.uhworks.smack.Services.UserDataService
 import org.uhworks.smack.Utilities.BROADCAST_USER_DATA_CHANGE
+import org.uhworks.smack.Utilities.SOCKET_URL
 
 class MainActivity : AppCompatActivity() {
+
+    val socket = IO.socket(SOCKET_URL)
 
     private val userDataChangeReceived = object : BroadcastReceiver() {
 
@@ -63,12 +67,26 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+    }
+
+
+    override fun onResume() {
 
         // Broadcast receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(
             userDataChangeReceived,
-            IntentFilter(BROADCAST_USER_DATA_CHANGE)
-        )
+            IntentFilter(BROADCAST_USER_DATA_CHANGE))
+
+        socket.connect()
+
+        super.onResume()
+    }
+
+    override fun onDestroy() {
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(userDataChangeReceived)
+        socket.disconnect()
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -118,6 +136,7 @@ class MainActivity : AppCompatActivity() {
                     val channelDescription = descTextField.text.toString()
 
                     // Create channel with channel name and description
+                    socket.emit("newChannel", channelName, channelDescription)
                 }
                 .setNegativeButton("Cancel") { dialogInterface, i ->
 
