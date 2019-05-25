@@ -14,13 +14,13 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/addChannelNameTxt" android:hint="channel name"
+            android:id="@+id/addChannelNameTxt" android:hint="@string/channel_name"
             android:layout_marginBottom="18dp" android:layout_marginRight="18dp" android:layout_marginLeft="18dp"/>
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/addChannelDescTxt" android:hint="channel description"
+            android:id="@+id/addChannelDescTxt" android:hint="@string/channel_description"
             android:layout_marginLeft="18dp" android:layout_marginRight="18dp" android:layout_marginBottom="18dp"/>
 </LinearLayout>

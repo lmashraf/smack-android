@@ -26,4 +26,7 @@
     <string name="generate_background_colour">Generate background colour</string>
     <string name="create_user">Create user</string>
     <string name="user_name">user name</string>
+    <string name="create_avatar">Create avatar</string>
+    <string name="channel_name">channel name</string>
+    <string name="channel_description">channel description</string>
 </resources>

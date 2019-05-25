@@ -15,7 +15,7 @@ import org.uhworks.smack.Utilities.*
 // Contains all functions that deal with authorisation
 object AuthService {
 
-    fun registerUser(context: Context, email: String, password: String, complete: (Boolean) -> Unit) {
+    fun registerUser(email: String, password: String, complete: (Boolean) -> Unit) {
 
         // Create JSON object and request
         val jsonBody = JSONObject()
@@ -49,7 +49,7 @@ object AuthService {
         App.prefs.requestQueue.add(registerRequest)
     }
 
-    fun loginUser(context: Context, email: String, password: String, complete: (Boolean) -> Unit) {
+    fun loginUser(email: String, password: String, complete: (Boolean) -> Unit) {
 
         val jsonBody = JSONObject()
         jsonBody.put("email", email)
@@ -92,7 +92,6 @@ object AuthService {
     }
 
     fun createUser(
-        context: Context,
         email: String,
         name: String,
         avatarName: String,

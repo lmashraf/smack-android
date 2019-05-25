@@ -16,7 +16,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp" android:textAlignment="center"
-            tools:text="Please Log In" android:id="@+id/mainChannelName"/>
+            tools:text="Please Log In" android:id="@+id/mainChannelName" android:textSize="18sp"
+            android:textStyle="bold"/>
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"

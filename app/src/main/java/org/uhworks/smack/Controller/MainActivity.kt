@@ -18,6 +18,7 @@ import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.uhworks.smack.Model.Channel
 import org.uhworks.smack.R
@@ -30,6 +31,8 @@ import org.uhworks.smack.Utilities.SOCKET_URL
 class MainActivity : AppCompatActivity() {
 
     private val socket: Socket = IO.socket(SOCKET_URL)
+
+    private var selectedChannel: Channel? = null
     private lateinit var channelAdapter: ArrayAdapter<Channel>
 
     private fun setupAdapters() {
@@ -60,16 +63,30 @@ class MainActivity : AppCompatActivity() {
 
                 loginNavHeaderBtn.text = "Logout"
 
-                MessageService.getChannels(context) { complete ->
+                MessageService.getChannels { complete ->
 
                     if (complete) {
 
-                        // reload the list view once the data has changed.
-                        channelAdapter.notifyDataSetChanged()
+                        if (MessageService.channels.count() > 0) {
+
+                            selectedChannel = MessageService.channels[0]
+
+                            // reload the list view once the data has changed.
+                            channelAdapter.notifyDataSetChanged()
+
+                            updateWithChannel()
+                        }
                     }
                 }
             }
         }
+    }
+
+    fun updateWithChannel() {
+
+        mainChannelName.text = "#${selectedChannel?.name}"
+
+        // download messages for channel
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,6 +118,16 @@ class MainActivity : AppCompatActivity() {
         // Check if already logged in
         if (App.prefs.isLoggedIn) {
             AuthService.findUserByEmail(this) {}
+        }
+
+        channel_list.setOnItemClickListener { _, _, i, _ ->
+
+            // Select the clicked channel
+            selectedChannel = MessageService.channels[i]
+
+            // Close drawer and update the channel name
+            drawer_layout.closeDrawer(GravityCompat.START)
+            updateWithChannel()
         }
     }
 
@@ -161,7 +188,7 @@ class MainActivity : AppCompatActivity() {
             val dialogView = layoutInflater.inflate(R.layout.add_channel_dialog, null)
 
             builder.setView(dialogView)
-                .setPositiveButton("Add") { dialogInterface, i ->
+                .setPositiveButton("Add") { _, _ ->
 
                     val nameTextField = dialogView.findViewById<EditText>(R.id.addChannelNameTxt)
                     val descTextField = dialogView.findViewById<EditText>(R.id.addChannelDescTxt)
@@ -172,7 +199,7 @@ class MainActivity : AppCompatActivity() {
                     // Create channel with channel name and description
                     socket.emit("newChannel", channelName, channelDescription)
                 }
-                .setNegativeButton("Cancel") { dialogInterface, i ->
+                .setNegativeButton("Cancel") { _, _ ->
 
                     // Cancel and close the dialog
                 }

@@ -66,13 +66,13 @@ class CreateUserActivity : AppCompatActivity() {
 
         if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
 
-            AuthService.registerUser(this, email, password) { registerSuccess ->
+            AuthService.registerUser(email, password) { registerSuccess ->
                 if (registerSuccess) {
 
-                    AuthService.loginUser(this, email, password) { loginSuccess ->
+                    AuthService.loginUser(email, password) { loginSuccess ->
                         if (loginSuccess) {
 
-                            AuthService.createUser(this, email, username, userAvatar, avatarColor) { createSuccess ->
+                            AuthService.createUser(email, username, userAvatar, avatarColor) { createSuccess ->
                                 if (createSuccess) {
 
                                     val userDataChange = Intent(BROADCAST_USER_DATA_CHANGE)
