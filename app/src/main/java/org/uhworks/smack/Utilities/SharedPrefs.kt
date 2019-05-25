@@ -1,6 +1,8 @@
 package org.uhworks.smack.Utilities
 
 import android.content.Context
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.Volley
 
 class SharedPrefs(context: Context) {
 
@@ -18,4 +20,6 @@ class SharedPrefs(context: Context) {
     var userEmail: String
         get() = prefs.getString(USER_EMAIL, "")
         set(value) = prefs.edit().putString(USER_EMAIL, value).apply()
+
+    var requestQueue: RequestQueue = Volley.newRequestQueue(context)
 }

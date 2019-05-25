@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.Volley
 import org.json.JSONException
 import org.uhworks.smack.Controller.App
 import org.uhworks.smack.Model.Channel
@@ -61,6 +60,6 @@ object MessageService {
             }
         }
 
-        Volley.newRequestQueue(context).add(channelsRequest)
+        App.prefs.requestQueue.add(channelsRequest)
     }
 }
