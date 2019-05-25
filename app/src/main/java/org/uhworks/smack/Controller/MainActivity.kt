@@ -10,11 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.socket.client.IO
+import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.uhworks.smack.Model.Channel
 import org.uhworks.smack.R
@@ -26,11 +29,19 @@ import org.uhworks.smack.Utilities.SOCKET_URL
 
 class MainActivity : AppCompatActivity() {
 
-    val socket = IO.socket(SOCKET_URL)
+    private val socket: Socket = IO.socket(SOCKET_URL)
+    private lateinit var channelAdapter: ArrayAdapter<Channel>
+
+    private fun setupAdapters() {
+
+        channelAdapter = ArrayAdapter<Channel>(this, android.R.layout.simple_list_item_1, MessageService.channels)
+
+        channel_list.adapter = channelAdapter
+    }
 
     private val userDataChangeReceived = object : BroadcastReceiver() {
 
-        override fun onReceive(context: Context?, intent: Intent?) {
+        override fun onReceive(context: Context, intent: Intent?) {
 
             if (AuthService.isLoggedIn) {
 
@@ -48,6 +59,15 @@ class MainActivity : AppCompatActivity() {
                 userImageNavHeaderImg.setBackgroundColor(backgroundColor)
 
                 loginNavHeaderBtn.text = "Logout"
+
+                MessageService.getChannels(context) { complete ->
+
+                    if(complete) {
+
+                        // reload the list view once the data has changed.
+                        channelAdapter.notifyDataSetChanged()
+                    }
+                }
             }
         }
     }
@@ -70,6 +90,9 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        // List view for channels
+        setupAdapters()
 
         // Create sockets only once
         socket.connect()
@@ -164,10 +187,9 @@ class MainActivity : AppCompatActivity() {
 
             MessageService.channels.add(newChannel)
 
-            //
-            println(newChannel.name)
-            println(newChannel.description)
-            println(newChannel.id)
+            // Add the channel to the UI
+            channelAdapter.notifyDataSetChanged()
+
         }
     }
 
