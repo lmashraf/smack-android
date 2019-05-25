@@ -14,9 +14,12 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.socket.client.IO
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.nav_header_main.*
+import org.uhworks.smack.Model.Channel
 import org.uhworks.smack.R
 import org.uhworks.smack.Services.AuthService
+import org.uhworks.smack.Services.MessageService
 import org.uhworks.smack.Services.UserDataService
 import org.uhworks.smack.Utilities.BROADCAST_USER_DATA_CHANGE
 import org.uhworks.smack.Utilities.SOCKET_URL
@@ -67,6 +70,10 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        // Create sockets only once
+        socket.connect()
+        socket.on("channelCreated", onNewChannel)
     }
 
 
@@ -75,9 +82,8 @@ class MainActivity : AppCompatActivity() {
         // Broadcast receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(
             userDataChangeReceived,
-            IntentFilter(BROADCAST_USER_DATA_CHANGE))
-
-        socket.connect()
+            IntentFilter(BROADCAST_USER_DATA_CHANGE)
+        )
 
         super.onResume()
     }
@@ -146,6 +152,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val onNewChannel = Emitter.Listener { args ->
+
+        runOnUiThread {
+
+            val channelName = args[0] as String
+            val channelDescription = args[1] as String
+            val channelId = args[2] as String
+
+            val newChannel = Channel(channelName, channelDescription, channelId)
+
+            MessageService.channels.add(newChannel)
+
+            //
+            println(newChannel.name)
+            println(newChannel.description)
+            println(newChannel.id)
+        }
+    }
+
     fun sendMessageBtnClicked(view: View) {
 
         hideKeyboard()
@@ -155,9 +180,9 @@ class MainActivity : AppCompatActivity() {
 
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        if(inputManager.isAcceptingText) {
+        if (inputManager.isAcceptingText) {
 
-            inputManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+            inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
     }
 }
