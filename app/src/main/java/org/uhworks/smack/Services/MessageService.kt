@@ -6,6 +6,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
+import org.uhworks.smack.Controller.App
 import org.uhworks.smack.Model.Channel
 import org.uhworks.smack.Utilities.URL_GET_CHANNELS
 
@@ -54,7 +55,7 @@ object MessageService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = hashMapOf<String, String>()
 
-                headers["Authorization"] = "Bearer ${AuthService.authToken}"
+                headers["Authorization"] = "Bearer ${App.prefs.authToken}"
 
                 return headers
             }

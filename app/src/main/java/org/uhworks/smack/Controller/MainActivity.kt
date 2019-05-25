@@ -3,6 +3,7 @@ package org.uhworks.smack.Controller
 import android.content.*
 import android.graphics.Color
 import android.os.Bundle
+import android.service.autofill.UserData
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onReceive(context: Context, intent: Intent?) {
 
-            if (AuthService.isLoggedIn) {
+            if (App.prefs.isLoggedIn) {
 
                 userNameNavHeaderTxt.text = UserDataService.name
                 userMailNavHeaderTxt.text = UserDataService.email
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
                 MessageService.getChannels(context) { complete ->
 
-                    if(complete) {
+                    if (complete) {
 
                         // reload the list view once the data has changed.
                         channelAdapter.notifyDataSetChanged()
@@ -97,6 +98,11 @@ class MainActivity : AppCompatActivity() {
         // Create sockets only once
         socket.connect()
         socket.on("channelCreated", onNewChannel)
+
+        // Check if already logged in
+        if (App.prefs.isLoggedIn) {
+            AuthService.findUserByEmail(this) {}
+        }
     }
 
 
@@ -129,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 
     fun loginNavHeaderBtnClicked(view: View) {
 
-        if (AuthService.isLoggedIn) {
+        if (App.prefs.isLoggedIn) {
 
             UserDataService.logout()
 
@@ -150,7 +156,7 @@ class MainActivity : AppCompatActivity() {
 
     fun addChannelBtnClicked(view: View) {
 
-        if (AuthService.isLoggedIn) {
+        if (App.prefs.isLoggedIn) {
 
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.add_channel_dialog, null)

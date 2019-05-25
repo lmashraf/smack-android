@@ -10,14 +10,11 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
 import org.json.JSONObject
+import org.uhworks.smack.Controller.App
 import org.uhworks.smack.Utilities.*
 
 // Contains all functions that deal with authorisation
 object AuthService {
-
-    var isLoggedIn = false
-    var userEmail = ""
-    var authToken = ""
 
     fun registerUser(context: Context, email: String, password: String, complete: (Boolean) -> Unit) {
 
@@ -67,13 +64,13 @@ object AuthService {
 
                 try {
 
-                    authToken = response.getString("token")
-                    userEmail = response.getString("user")
-                    isLoggedIn = true
+                    App.prefs.authToken = response.getString("token")
+                    App.prefs.userEmail = response.getString("user")
+                    App.prefs.isLoggedIn = true
                 } catch (e: JSONException) {
 
                     Log.d("JSON", "EXC: ${e.localizedMessage}")
-                    isLoggedIn = false
+                    App.prefs.isLoggedIn = false
                     complete(false)
                 }
                 complete(true)
@@ -148,7 +145,7 @@ object AuthService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = hashMapOf<String, String>()
 
-                headers["Authorization"] = "Bearer $authToken"
+                headers["Authorization"] = "Bearer ${App.prefs.authToken}"
 
                 return headers
             }
@@ -160,9 +157,9 @@ object AuthService {
     fun findUserByEmail(context: Context, complete: (Boolean) -> Unit) {
 
         val findUserRequest = object : JsonObjectRequest(Method.GET,
-            "$URL_GET_USER$userEmail",
+            "$URL_GET_USER${App.prefs.userEmail}",
             null,
-            Response.Listener {response ->
+            Response.Listener { response ->
 
                 try {
 
@@ -183,7 +180,7 @@ object AuthService {
                     complete(false)
                 }
             },
-            Response.ErrorListener {error ->
+            Response.ErrorListener { error ->
                 Log.d("ERROR", "Could not register user: $error")
                 complete(false)
 
@@ -196,7 +193,7 @@ object AuthService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = hashMapOf<String, String>()
 
-                headers["Authorization"] = "Bearer $authToken"
+                headers["Authorization"] = "Bearer ${App.prefs.authToken}"
 
                 return headers
             }
