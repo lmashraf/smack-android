@@ -14,12 +14,14 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import org.uhworks.smack.Adapters.MessageAdapter
 import org.uhworks.smack.Model.Channel
 import org.uhworks.smack.Model.Message
 import org.uhworks.smack.R
@@ -35,12 +37,20 @@ class MainActivity : AppCompatActivity() {
 
     private var selectedChannel: Channel? = null
     private lateinit var channelAdapter: ArrayAdapter<Channel>
+    private lateinit var messageAdapter: MessageAdapter
 
     private fun setupAdapters() {
 
+        // Channels adapter
         channelAdapter = ArrayAdapter<Channel>(this, android.R.layout.simple_list_item_1, MessageService.channels)
-
         channel_list.adapter = channelAdapter
+
+        // Messages adapter
+        messageAdapter = MessageAdapter(this, MessageService.messages)
+        messageListView.adapter = messageAdapter
+
+        val layoutManager = LinearLayoutManager(this)
+        messageListView.layoutManager = layoutManager
     }
 
     private val userDataChangeReceived = object : BroadcastReceiver() {
@@ -93,10 +103,12 @@ class MainActivity : AppCompatActivity() {
 
                 if (complete) {
 
-                    // Display the messages
-                    for (message in MessageService.messages) {
+                    messageAdapter.notifyDataSetChanged()
 
-                        println(message)
+                    // Scroll to the bottom
+                    if (messageAdapter.itemCount > 0) {
+
+                        messageListView.smoothScrollToPosition(messageAdapter.itemCount - 1)
                     }
                 }
             }
@@ -179,6 +191,9 @@ class MainActivity : AppCompatActivity() {
         if (App.prefs.isLoggedIn) {
 
             UserDataService.logout()
+
+            channelAdapter.notifyDataSetChanged()
+            messageAdapter.notifyDataSetChanged()
 
             userNameNavHeaderTxt.text = ""
             userMailNavHeaderTxt.text = ""
@@ -264,6 +279,8 @@ class MainActivity : AppCompatActivity() {
                         Message(messageBody, userName, channelId, userAvatar, userAvatarColor, id, timeStamp)
 
                     MessageService.messages.add(newMessage)
+                    messageAdapter.notifyDataSetChanged()
+                    messageListView.smoothScrollToPosition(messageAdapter.itemCount - 1)
                 }
             }
         }
